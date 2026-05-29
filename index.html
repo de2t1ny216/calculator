@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My SkyBlue Calculator</title>
+    <style>
+        div.empty, div.vertical, div.horizontal { display: none; }
+        @media (max-width: 360px) { div.empty { display: block; } }
+        @media (min-width: 361px) and (max-width: 600px) { div.vertical { display: block; } }
+        @media (min-width: 601px) { div.horizontal { display: block; } }
+
+        table { 
+        border-collapse: collapse;
+        background-color: #EEEEEE;
+        border: 1px solid #CCCCCC;
+        margin: 20px auto;
+        }
+        td {
+            padding: 0;
+            width: 70px;
+            height: 60px; 
+        }
+        
+        #display1, #display2 { 
+            display: block; background-color: white; color: #333; 
+            height: 60px; line-height: 60px; text-align: right; 
+            padding-right: 15px; font-size: 2rem; font-family: sans-serif; 
+        }
+
+        button {
+            width: 100%;
+            height: 100%;
+            border: 0.5px solid #DDDDDD;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .btn-num { background-color: #FFFFFF; color: #333; }
+        .btn-func { background-color: #DDDDDD; color: #555; }
+        .btn-op { background-color: #87CEEB; color: white; }
+        .btn-empty { background-color: #CCCCCC; cursor: default; }
+        button:active {
+            filter: brightness(0.85);
+            transform: scale(0.98);
+        }
+        .logo-area { text-align: right; margin-top: 5px; padding-right: 5px; }
+        .logo-text { font-size: 0.8rem; color: #888; font-family: sans-serif; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="empty">
+        <p style="text-align:center; margin-top:50px;">표시할 수 없음.</p>
+    </div>
+    
+    <div class="vertical">
+        <table>
+            <tr><td colspan="4" bgcolor="white"><span id="display2">0</span></td></tr>
+            <tr>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-empty"></button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-func" onclick="clearAll()">CE</button></td>
+                <td><button class="btn-func" onclick="mathMath('sqrt')">√x</button></td>
+                <td><button class="btn-func" onclick="mathMath('percent')">%</button></td>
+                <td><button class="btn-op" onclick="opClick('/')">÷</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-num" onclick="numberButton(7)">7</button></td>
+                <td><button class="btn-num" onclick="numberButton(8)">8</button></td>
+                <td><button class="btn-num" onclick="numberButton(9)">9</button></td>
+                <td><button class="btn-op" onclick="opClick('*')">×</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-num" onclick="numberButton(4)">4</button></td>
+                <td><button class="btn-num" onclick="numberButton(5)">5</button></td>
+                <td><button class="btn-num" onclick="numberButton(6)">6</button></td>
+                <td><button class="btn-op" onclick="opClick('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-num" onclick="numberButton(1)">1</button></td>
+                <td><button class="btn-num" onclick="numberButton(2)">2</button></td>
+                <td><button class="btn-num" onclick="numberButton(3)">3</button></td>
+                <td><button class="btn-op" onclick="opClick('+')">+</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-num" onclick="numberButton(0)">0</button></td>
+                <td><button class="btn-num" onclick="numberButton('.')">.</button></td>
+                <td><button class="btn-func" onclick="mathMath('toggle')">+/-</button></td>
+                <td><button class="btn-op" onclick="equalButton()">=</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-func" onclick="mathMath('pi')">π</button></td>
+                <td><button class="btn-func" onclick="mathMath('sqr')">x²</button></td>
+                <td><button class="btn-func" onclick="mathMath('r2')">R2</button></td>
+                <td><button class="btn-func" onclick="mathMath('r0')">R0</button></td>
+            </tr>
+            <tr><td colspan="4"><div class="logo-area"><p class="logo-text">© 20253437~JiyoungKang~</p></div></td></tr>
+        </table>
+    </div>
+    
+    <div class="horizontal">
+        <table>
+            <tr><td colspan="7" bgcolor="white"><span id="display1">0</span></td></tr>
+            <tr>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-num" onclick="numberButton(7)">7</button></td>
+                <td><button class="btn-num" onclick="numberButton(8)">8</button></td>
+                <td><button class="btn-num" onclick="numberButton(9)">9</button></td>
+                <td><button class="btn-op" onclick="opClick('/')">÷</button></td>
+                <td><button class="btn-func" onclick="mathMath('r2')">R2</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-empty"></button></td>
+                <td><button class="btn-num" onclick="numberButton(4)">4</button></td>
+                <td><button class="btn-num" onclick="numberButton(5)">5</button></td>
+                <td><button class="btn-num" onclick="numberButton(6)">6</button></td>
+                <td><button class="btn-op" onclick="opClick('*')">×</button></td>
+                <td><button class="btn-func" onclick="mathMath('r0')">R0</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-func" onclick="mathMath('pi')">π</button></td>
+                <td><button class="btn-func" onclick="mathMath('sqr')">x²</button></td>
+                <td><button class="btn-num" onclick="numberButton(1)">1</button></td>
+                <td><button class="btn-num" onclick="numberButton(2)">2</button></td>
+                <td><button class="btn-num" onclick="numberButton(3)">3</button></td>
+                <td><button class="btn-op" onclick="opClick('-')">-</button></td>
+                <td><button class="btn-func" onclick="clearAll()">CE</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn-func" onclick="mathMath('sqrt')">√x</button></td>
+                <td><button class="btn-func" onclick="mathMath('percent')">%</button></td>
+                <td><button class="btn-num" onclick="numberButton(0)">0</button></td>
+                <td><button class="btn-num" onclick="numberButton('.')">.</button></td>
+                <td><button class="btn-func" onclick="mathMath('toggle')">+/-</button></td>
+                <td><button class="btn-op" onclick="opClick('+')">+</button></td>
+                <td><button class="btn-op" onclick="equalButton()">=</button></td>
+            </tr>
+            <tr><td colspan="7"><div class="logo-area"><p class="logo-text">© 20253437~JiyoungKang~</p></div></td></tr>
+        </table>
+    </div>
+
+    <script>
+        let curValue = 0;
+        let operator = '';
+        let isNewInput = false;
+
+        function updateDisplay(val) {
+            document.getElementById('display1').innerHTML = val;
+            document.getElementById('display2').innerHTML = val;
+        }
+
+        function numberButton(num) {
+            let current = document.getElementById('display1').innerHTML;
+            if (current === '0' || isNewInput) {
+                updateDisplay(num);
+                isNewInput = false;
+            } else {
+                if (num === '.' && current.includes('.')) return; // 점 중복 방지
+                updateDisplay(current + num);
+            }
+        }
+
+        function opClick(op) {
+            curValue = parseFloat(document.getElementById('display1').innerHTML);
+            operator = op;
+            isNewInput = true;
+        }
+
+        function equalButton() {
+            let secondValue = parseFloat(document.getElementById('display1').innerHTML);
+            let result = 0;
+            if (operator == '+') result = curValue + secondValue;
+            else if (operator == '-') result = curValue - secondValue;
+            else if (operator == '*') result = curValue * secondValue;
+            else if (operator == '/') result = curValue / secondValue;
+            else result = secondValue;
+            
+            updateDisplay(result);
+            isNewInput = true;
+        }
+
+        function clearAll() {
+            curValue = 0;
+            operator = '';
+            updateDisplay('0');
+        }
+
+        function mathMath(type) {
+            let val = parseFloat(document.getElementById('display1').innerHTML);
+            if (type == 'sqrt') updateDisplay(Math.sqrt(val));
+            else if (type == 'percent') updateDisplay(val / 100);
+            else if (type == 'sqr') updateDisplay(val * val);
+            else if (type == 'pi') updateDisplay(Math.PI.toFixed(8));
+            else if (type == 'toggle') updateDisplay(val * -1);
+            else if (type == 'r2') updateDisplay(val.toFixed(2));
+            else if (type == 'r0') updateDisplay(Math.round(val));
+        }
+    </script>
+</body>
+</html>
